@@ -14,10 +14,8 @@ namespace DesafioTecnicoMP
 
         private const int timeout = 10;
 
-        public CrawlerService(string url)
+        public CrawlerService()
         {
-            _url = url;
-
             Setup();
         }
 
@@ -26,7 +24,10 @@ namespace DesafioTecnicoMP
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("headless");
 
-            _driver = new ChromeDriver(chromeOptions);
+            var driverService = ChromeDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+
+            _driver = new ChromeDriver(driverService, chromeOptions);
             _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeout));
 
             return this;

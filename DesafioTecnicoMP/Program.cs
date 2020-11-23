@@ -7,92 +7,76 @@ namespace DesafioTecnicoMP
     {
         static void Main(string[] args)
         {
-            //var url = @"https://lerolero.com/";
-            //var url2 = @"https://mothereff.in/byte-counter#";
+            Console.WriteLine("Iniciando a aplicação...");
 
-            //CrawlerService crawler = new CrawlerService(url);
+            var firstCrawlerUrl = @"https://lerolero.com/";
+            var secondCrawlerUrl = @"https://mothereff.in/byte-counter#";
 
-            //var sentence = string.Empty;
+            var crawler = new CrawlerService();
 
-            //try
-            //{
-            //    sentence = crawler
-            //        .GoToUrl(url)
-            //        .GetTextContentFromElement(".sentence");
-            //} 
-            //catch(CrawlerException ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
+            var sentence = string.Empty;
 
-            //var bytesCount = 0;
-
-            //try
-            //{
-            //    var bytesFromPage = crawler
-            //        .GoToUrl(url2+sentence)
-            //        .GetTextContentFromElement("#bytes");
-
-            //    bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
-            //}
-            //catch (CrawlerException)
-            //{
-            //    bytesCount = BytesService.CountFromString(sentence); 
-            //}
-            //finally
-            //{
-            //    crawler.Quit();
-            //}
-
-            var sentence = "O empenho em analisar a mobilidade dos capitais internacionais auxilia a preparação e a composição das condições inegavelmente apropriadas.";
-            var bytesCount = BytesService.CountFromString(sentence);
-
-            var sentenceInBytes = BytesService.StringToBytes(sentence);
-
-            var path = @"D:\dev\desafio.txt";
-            int bufferSize = 1048576;
-            var buffer = new byte[bufferSize];
-
-            for (var i = 0; i < bufferSize && (bytesCount + i < bufferSize); i+=bytesCount)
+            try
             {
-                for(var j = 0; j < bytesCount; j++)
-                {
-                    buffer[i+j] = sentenceInBytes[j];
-                }
+                Console.WriteLine("Iniciando o crawler do primeiro site...");
+                sentence = crawler
+                    .GoToUrl(firstCrawlerUrl)
+                    .GetTextContentFromElement(".sentence");
+                Console.WriteLine("Crawler do primeiro site finalizado com sucesso...");
+            }
+            catch (CrawlerException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
             }
 
-            var isEqual = true;
-            for (var i = 0; i < bufferSize && (bytesCount+ i < bufferSize); i+=bytesCount)
+            var bytesCount = 0;
+
+            try
             {
-                for (var j = 0; j < bytesCount; j++)
-                {
-                    if(buffer[i + j] != sentenceInBytes[j])
-                    {
-                        throw new Exception("O buffer não está preenchido corretamente.");
-                    }
-                }
+                Console.WriteLine("Iniciando o crawler do segundo site...");
+                var bytesFromPage = crawler
+                    .GoToUrl(secondCrawlerUrl + sentence)
+                    .GetTextContentFromElement("#bytes");
+
+                bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
+                Console.WriteLine("Crawler do segundo site finalizado com sucesso...");
+            }
+            catch (CrawlerException)
+            {
+                bytesCount = BytesService.CountFromString(sentence);
+            }
+            finally
+            {
+                crawler.Quit();
             }
 
-            for (var i = bufferSize-1; i > 0; i--)
-            {
-                var a = buffer[i];
-                if(a != 0)
-                {
-                    var t = $"Mudou o valor no indice {i} {bufferSize-i}";
-                }
-            }
+            //var sentence = "O empenho em analisar a mobilidade dos capitais internacionais auxilia a preparação e a composição das condições inegavelmente apropriadas.";
+            //var bytesCount = 145;
+            var fileSize = 3565158; // 3.482MB
+            var bufferLength = 1048576;
 
-            //if (!File.Exists(path)) File.Create(path);
+            Console.WriteLine("Iniciando a escrita do texto no arquivo utilizando buffer...");
 
-            //Stream dest = null;
-            //using var source = File.OpenRead(path);
-            //var buffer = new byte[bufferSize];
-            //int bytesRead;
-            //while ((bytesRead = source.Read(buffer, 0, buffer.Length)) > 0)
-            //{
-            //    dest.Write(buffer, 0, bytesRead);
-            //}
+            var path = Path.Join(@"D:", @"dev");
 
+            var writeBuffer = new WriteBuffer(bufferLength)
+                .StringInput(sentence)
+                .BytesCount(bytesCount);
+
+            var report = new FileService(path, fileSize)
+                .WriteUsingBufferUntilEnd(writeBuffer)
+                .Report();
+
+            //Console.Clear();
+            Console.WriteLine("Escrita do texto no arquivo finalizada com sucesso...");
+
+            var consoleTable = new ConsoleTable(200);
+            consoleTable.PrintLine();
+            consoleTable.PrintRow("Nome", "Tamanho", "Path", "Iterações", "Tempo Total", "Tempo Médio");
+            consoleTable.PrintLine();
+            consoleTable.PrintRow(report.FileName, report.FileSize.ToString(), report.Path, report.Iterations.ToString(), "0", "0");
+            consoleTable.PrintLine();
             Console.ReadLine();
         }
     }
