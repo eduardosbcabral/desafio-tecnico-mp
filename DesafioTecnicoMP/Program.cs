@@ -14,7 +14,7 @@ namespace DesafioTecnicoMP
 
             var crawler = new CrawlerService();
 
-            var sentence = string.Empty;
+            string sentence;
 
             try
             {
@@ -75,7 +75,7 @@ namespace DesafioTecnicoMP
             consoleTable.PrintLine();
             consoleTable.PrintRow("Nome", "Tamanho", "Path", "Iterações", "Tempo Total", "Tempo Médio");
             consoleTable.PrintLine();
-            consoleTable.PrintRow(report.FileName, report.FileSize.ToString(), report.Path, report.Iterations.ToString(), "0", "0");
+            consoleTable.PrintRow(report.FileName, report.FileSize.ToString(), report.Path, report.Iterations.ToString(), report.TotalTime.ToString(), report.AverageTime.ToString());
             consoleTable.PrintLine();
             Console.ReadLine();
         }

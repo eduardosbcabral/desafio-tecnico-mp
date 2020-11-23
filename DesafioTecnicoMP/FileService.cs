@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace DesafioTecnicoMP
@@ -13,6 +14,8 @@ namespace DesafioTecnicoMP
 
         private int _iterations = 0;
 
+        private readonly Stopwatch _stopWatch;
+
         public FileService(string path, int fileSize)
         {
             _path = Path.Join(@"D:", @"dev");
@@ -20,13 +23,17 @@ namespace DesafioTecnicoMP
             _fullPath = Path.Combine(path, _fileName);
 
             _fileSize = fileSize;
+
+            _stopWatch = new Stopwatch();
         }
 
         public FileService WriteUsingBufferUntilEnd(WriteBuffer writeBuffer)
         {
-            using FileStream fs = File.OpenWrite(_fullPath);
-
             var bufferLength = writeBuffer.BufferLength();
+
+            _stopWatch.Start();
+
+            using FileStream fs = File.OpenWrite(_fullPath);
 
             for (var i = 0; i < _fileSize; i += bufferLength)
             {
@@ -50,12 +57,14 @@ namespace DesafioTecnicoMP
 
             Close();
 
+            _stopWatch.Stop();
+
             return this;
         }
 
         public Report Report()
         {
-            return new Report(_fileName, _fileSize, _path, _iterations, DateTime.Now, DateTime.Now);
+            return new Report(_fileName, _fileSize, _path, _iterations, _stopWatch.Elapsed, _stopWatch.Elapsed/_iterations);
         }
 
         private FileService Close()
