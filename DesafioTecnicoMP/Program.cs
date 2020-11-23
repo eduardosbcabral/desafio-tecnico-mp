@@ -18,12 +18,14 @@ namespace DesafioTecnicoMP
             if (string.IsNullOrEmpty(path))
             {
                 Console.WriteLine("The argument -p (Path) is required.");
+                Console.ReadLine();
                 return;
             }
 
             if (fileSizeArg <= 0)
             {
-                Console.WriteLine("The argument -f (File Size) is invalid, should be higher than zero.");
+                Console.WriteLine("[ERROR] The argument -f (File Size) is invalid, should be higher than zero.");
+                Console.ReadLine();
                 return;
             }
 
@@ -40,7 +42,8 @@ namespace DesafioTecnicoMP
 
             if (bufferLengthArg < 0)
             {
-                Console.WriteLine("The argument -b (Buffer Length) is invalid, should be higher than zero.");
+                Console.WriteLine("[ERROR] The argument -b (Buffer Length) is invalid, should be higher than zero.");
+                Console.ReadLine();
                 return;
             }
 
@@ -71,7 +74,8 @@ namespace DesafioTecnicoMP
             }
             catch (CrawlerException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("[ERROR] " + ex.Message);
+                Console.ReadLine();
                 return;
             }
 
