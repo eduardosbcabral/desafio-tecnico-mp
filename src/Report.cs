@@ -5,7 +5,7 @@ namespace DesafioTecnicoMP
     public class Report
     {
         public string FileName { get; private set; }
-        public long FileSize { get; private set; }
+        public string FileSize { get; private set; }
         public string Path { get; private set; }
         public int Iterations { get; private set; }
         public TimeSpan TotalTime { get; private set; }
@@ -14,7 +14,7 @@ namespace DesafioTecnicoMP
         public Report(string fileName, long fileSize, string path, int iterations, TimeSpan totalTime, TimeSpan averageTime)
         {
             FileName = fileName;
-            FileSize = fileSize;
+            FileSize = BytesService.ConvertBytesToMegabytes(fileSize) + "mb";
             Path = path;
             Iterations = iterations;
             TotalTime = totalTime;

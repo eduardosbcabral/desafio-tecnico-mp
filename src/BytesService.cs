@@ -18,5 +18,10 @@ namespace DesafioTecnicoMP
         {
             return mb * 1048576;
         }
+
+        public static long ConvertBytesToMegabytes(long bytes)
+        {
+            return bytes / 1024 / 1024;
+        }
     }
 }
