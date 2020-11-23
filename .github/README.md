@@ -1,9 +1,17 @@
 # Desafio Técnico - MP
 
-## Sobre o projeto
+<p align="center">
+  <a href="#about">Sobre o projeto</a> •
+  <a href="#installation">Instalação</a> •
+  <a href="#packages">Pacotes utilizados no projeto</a> •
+  <a href="#build-exec">Build e Execução</a> •
+  <a href="#author">Author</a> •
+</p>
+
+## [Sobre o projeto](#about)
 O objetivo geral do desafio é implementar uma aplicação console gerador de arquivos. Para cumprir o objetivo, o algoritmo utiliza um crawler para recuperar o texto base para logo após utilizar buffers de tamanho pré-definido pelo usuário para realizar a escrita contínua e repetida em um arquivo de tamanho também pré-definido e no final gerar um relatório impresso no console que mostra informações como: nome do arquivo, quantidade de iterações, tempo total gasto na escrita, etc.
 
-## Instalação
+## [Instalação](#installation)
 
 ### Passos de download e instalação:
 
@@ -23,11 +31,11 @@ Será necessário realizar o clone do repositório para a execução em sua máq
 git clone https://github.com/eduardosbcabral/desafio-tecnico-mp.git
 ```
 
-## Pacotes utilizados no projeto
+## [Pacotes utilizados no projeto](#packages)
 
 - Selenium.WebDriver (3.141.0)
 
-## Build e Execução
+## [Build e Execução](#build-exec)
 
 Para buildar e executar o projeto, entre no diretório ```src/``` e execute o seguinte comando:
 
@@ -64,3 +72,9 @@ Para executar o arquivo, entre na pasta ```src/bin/Release/netcoreapp3.1/{win10-
 // Executável Linux
 DesafioTecnicoMP -f 5 -b 1 -p "DIRETÓRIO NA SUA MÁQUINA (EX: D:\dev)"
 ```
+## [Autor](#author)
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/eduardosbcabral"><img style="border-radius: 50%;" src="https://avatars2.githubusercontent.com/u/29133996?s=460&u=5b6448ac95459d30e91293f9893d9fafe54fb523&v=4" width="100px;" alt=""/><br /><sub><b>Eduardo Cabral</b></sub></a><br />
+  </tr>
+</table>
