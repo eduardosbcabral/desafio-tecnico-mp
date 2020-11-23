@@ -2,7 +2,7 @@
 
 namespace DesafioTecnicoMP
 {
-    public class CrawlerErrors
+    public class Errors
     {
         private static string[] errors = new string[]
         {

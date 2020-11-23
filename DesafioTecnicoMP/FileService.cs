@@ -10,13 +10,13 @@ namespace DesafioTecnicoMP
         private readonly string _fileName;
         private readonly string _fullPath;
 
-        private readonly int _fileSize;
+        private readonly long _fileSize;
 
         private int _iterations = 0;
 
         private readonly Stopwatch _stopWatch;
 
-        public FileService(string path, int fileSize)
+        public FileService(string path, long fileSize)
         {
             _path = Path.Join(@"D:", @"dev");
             _fileName = $"{DateTime.Now:yyyy-MM-dd-HHmmss}-desafio.txt";
@@ -35,20 +35,20 @@ namespace DesafioTecnicoMP
 
             using FileStream fs = File.OpenWrite(_fullPath);
 
-            for (var i = 0; i < _fileSize; i += bufferLength)
+            for (var i = 0d; i < _fileSize; i += bufferLength)
             {
                 var buffer = writeBuffer
                     .WriteUntilEnd()
                     .Buffer();
 
-                var writeLenth = bufferLength;
+                var writeLength = bufferLength;
 
                 if ((i + bufferLength) > _fileSize)
                 {
-                    writeLenth = _fileSize - i;
+                    writeLength = (long)(_fileSize - i);
                 }
 
-                fs.Write(buffer, 0, writeLenth);
+                fs.Write(buffer, 0, (int)writeLength);
 
                 writeBuffer.Clear();
 

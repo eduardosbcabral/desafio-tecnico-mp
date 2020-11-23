@@ -22,7 +22,7 @@ namespace DesafioTecnicoMP
         public CrawlerService Setup()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments("headless");
+            //chromeOptions.AddArguments("headless");
 
             var driverService = ChromeDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
@@ -42,7 +42,7 @@ namespace DesafioTecnicoMP
             } 
             catch(WebDriverException)
             {
-                throw new CrawlerException(CrawlerErrors.Random());
+                throw new CrawlerException(Errors.Random());
             }
 
             return this;
@@ -61,7 +61,7 @@ namespace DesafioTecnicoMP
             }
             catch(NoSuchElementException)
             {
-                throw new CrawlerException(CrawlerErrors.Random());
+                throw new CrawlerException(Errors.Random());
             }
 
             return text;
@@ -78,7 +78,7 @@ namespace DesafioTecnicoMP
             }
             catch (NoSuchElementException)
             {
-                throw new CrawlerException(CrawlerErrors.Random());
+                throw new CrawlerException(Errors.Random());
             }
 
             return this;

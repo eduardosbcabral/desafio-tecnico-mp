@@ -9,7 +9,7 @@ namespace DesafioTecnicoMP
         public ConsoleTable(int tableWidth)
         {
             _tableWidth = tableWidth;
-            Console.WriteLine("Imprimindo o relatório...");
+            Console.WriteLine("Printing report...");
         }
 
         public void PrintLine()

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DesafioTecnicoMP": {
+      "commandName": "Project",
+      "commandLineArgs": "-f 5 -b 1 -p \"D:\\dev\""
+    }
+  }
+}

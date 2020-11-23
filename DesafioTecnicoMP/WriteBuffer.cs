@@ -6,16 +6,20 @@ namespace DesafioTecnicoMP
     {
         private readonly byte[] _buffer;
 
-        private readonly int _bufferLength;
+        private readonly long _bufferLength;
 
         private string _str;
         private int _bytesCount;
         private byte[] _strInBytes;
 
-        public WriteBuffer(int bufferLength = 1048576)
+        private readonly bool _integrityCheck;
+
+        public WriteBuffer(long bufferLength, bool integrityCheck = false)
         {
             _bufferLength = bufferLength;
             _buffer = new byte[_bufferLength];
+
+            _integrityCheck = integrityCheck;
         }
 
         public WriteBuffer StringInput(string str)
@@ -32,7 +36,7 @@ namespace DesafioTecnicoMP
             return this;
         }
 
-        public int BufferLength()
+        public long BufferLength()
         {
             return _bufferLength;
         }
@@ -44,7 +48,7 @@ namespace DesafioTecnicoMP
 
         public WriteBuffer Clear()
         {
-            Array.Clear(_buffer, 0, _bufferLength);
+            Array.Clear(_buffer, 0, (int)_bufferLength);
             return this;
         }
 
@@ -52,7 +56,7 @@ namespace DesafioTecnicoMP
         {
             Validate();
 
-            for (var i = 0; i < _bufferLength; i += _bytesCount)
+            for (var i = 0L; i < _bufferLength; i += _bytesCount)
             {
                 for (var j = 0; j < _bytesCount; j++)
                 {
@@ -62,7 +66,7 @@ namespace DesafioTecnicoMP
                 }
             }
 
-            if (!CheckBufferIntegrity())
+            if (_integrityCheck && !CheckBufferIntegrity())
             {
                 throw new Exception("Buffer não está íntegro.");
             }

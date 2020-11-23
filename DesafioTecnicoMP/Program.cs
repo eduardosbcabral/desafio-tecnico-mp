@@ -1,16 +1,61 @@
 ﻿using System;
-using System.IO;
 
 namespace DesafioTecnicoMP
 {
     class Program
     {
+        private const long DEFAULT_FILE_SIZE = 104857600;
+        private const long DEFAULT_BUFFER_LENGTH = 1048576;
+        private const string FIRST_CRAWLER_URL = @"https://lerolero.com/";
+        private const string SECOND_CRAWLER_URL = @"https://mothereff.in/byte-counter#";
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Iniciando a aplicação...");
+            var fileSizeArg = GetArgValue<long>(args, "-f");
+            var bufferLengthArg = GetArgValue<long>(args, "-b");
+            var path = GetArgValue<string>(args, "-p");
 
-            var firstCrawlerUrl = @"https://lerolero.com/";
-            var secondCrawlerUrl = @"https://mothereff.in/byte-counter#";
+            if (string.IsNullOrEmpty(path))
+            {
+                Console.WriteLine("The argument -p (Path) is required.");
+                return;
+            }
+
+            if (fileSizeArg <= 0)
+            {
+                Console.WriteLine("The argument -f (File Size) is invalid, should be higher than zero.");
+                return;
+            }
+
+            long fileSize;
+
+            if (fileSizeArg == 0)
+            {
+                fileSize = DEFAULT_FILE_SIZE;
+            }
+            else
+            {
+                fileSize = BytesService.ConvertMegabytesToBytes(fileSizeArg);
+            }
+
+            if (bufferLengthArg < 0)
+            {
+                Console.WriteLine("The argument -b (Buffer Length) is invalid, should be higher than zero.");
+                return;
+            }
+
+            long bufferLength;
+
+            if (bufferLengthArg == 0)
+            {
+                bufferLength = DEFAULT_BUFFER_LENGTH;
+            }
+            else
+            {
+                bufferLength = BytesService.ConvertMegabytesToBytes(bufferLengthArg);
+            }
+
+            Console.WriteLine("Starting application...");
 
             var crawler = new CrawlerService();
 
@@ -18,11 +63,11 @@ namespace DesafioTecnicoMP
 
             try
             {
-                Console.WriteLine("Iniciando o crawler do primeiro site...");
+                Console.WriteLine("Starting first crawler...");
                 sentence = crawler
-                    .GoToUrl(firstCrawlerUrl)
+                    .GoToUrl(FIRST_CRAWLER_URL)
                     .GetTextContentFromElement(".sentence");
-                Console.WriteLine("Crawler do primeiro site finalizado com sucesso...");
+                Console.WriteLine("First crawler successfully completed...");
             }
             catch (CrawlerException ex)
             {
@@ -34,13 +79,13 @@ namespace DesafioTecnicoMP
 
             try
             {
-                Console.WriteLine("Iniciando o crawler do segundo site...");
+                Console.WriteLine("Starting second crawler...");
                 var bytesFromPage = crawler
-                    .GoToUrl(secondCrawlerUrl + sentence)
+                    .GoToUrl(SECOND_CRAWLER_URL + sentence)
                     .GetTextContentFromElement("#bytes");
 
                 bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
-                Console.WriteLine("Crawler do segundo site finalizado com sucesso...");
+                Console.WriteLine("Second crawler successfully completed...");
             }
             catch (CrawlerException)
             {
@@ -51,14 +96,7 @@ namespace DesafioTecnicoMP
                 crawler.Quit();
             }
 
-            //var sentence = "O empenho em analisar a mobilidade dos capitais internacionais auxilia a preparação e a composição das condições inegavelmente apropriadas.";
-            //var bytesCount = 145;
-            var fileSize = 3565158; // 3.482MB
-            var bufferLength = 1048576;
-
-            Console.WriteLine("Iniciando a escrita do texto no arquivo utilizando buffer...");
-
-            var path = Path.Join(@"D:", @"dev");
+            Console.WriteLine("Starting to write in the file using buffer...");
 
             var writeBuffer = new WriteBuffer(bufferLength)
                 .StringInput(sentence)
@@ -68,16 +106,46 @@ namespace DesafioTecnicoMP
                 .WriteUsingBufferUntilEnd(writeBuffer)
                 .Report();
 
-            //Console.Clear();
-            Console.WriteLine("Escrita do texto no arquivo finalizada com sucesso...");
+            Console.WriteLine("Writing to file successfully completed...");
 
+            PrintReport(report);
+        }
+
+        static void PrintReport(Report report)
+        {
             var consoleTable = new ConsoleTable(200);
             consoleTable.PrintLine();
             consoleTable.PrintRow("Nome", "Tamanho", "Path", "Iterações", "Tempo Total", "Tempo Médio");
             consoleTable.PrintLine();
-            consoleTable.PrintRow(report.FileName, report.FileSize.ToString(), report.Path, report.Iterations.ToString(), report.TotalTime.ToString(), report.AverageTime.ToString());
+            consoleTable.PrintRow(
+                report.FileName,
+                report.FileSize.ToString(),
+                report.Path,
+                report.Iterations.ToString(),
+                report.TotalTime.ToString(),
+                report.AverageTime.ToString());
             consoleTable.PrintLine();
             Console.ReadLine();
+        }
+
+        static T GetArgValue<T>(string[] args, string argName)
+        {
+            T argValue = default;
+            for(var i = 0; i < args.Length; i++)
+            {
+                if(args[i] == argName)
+                {
+                    try
+                    {
+                        argValue = (T)Convert.ChangeType(args[i + 1], typeof(T));
+                    }
+                    catch (Exception)
+                    {
+                        throw new ArgumentException("An error occurred while running the application with the parameters.");
+                    }
+                }
+            }
+            return argValue;
         }
     }
 }
