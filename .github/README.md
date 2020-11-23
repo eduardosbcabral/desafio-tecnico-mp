@@ -5,7 +5,7 @@
   <a href="#installation">Instalação</a> •
   <a href="#packages">Pacotes utilizados no projeto</a> •
   <a href="#build-exec">Build e Execução</a> •
-  <a href="#author">Author</a>
+  <a href="#author">Autor</a>
 </p>
 
 ## <a name="about"></a>Sobre o projeto
