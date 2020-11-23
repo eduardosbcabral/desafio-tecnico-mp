@@ -22,7 +22,7 @@ namespace DesafioTecnicoMP
         public CrawlerService Setup()
         {
             var chromeOptions = new ChromeOptions();
-            //chromeOptions.AddArguments("headless");
+            chromeOptions.AddArguments("headless");
 
             var driverService = ChromeDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
