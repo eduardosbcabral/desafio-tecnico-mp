@@ -8,6 +8,10 @@
   <a href="#author">Autor</a>
 </p>
 
+<p align="center">
+  <img src="project.png?raw=true" alt="Screenshot da execução do projeto" />
+</p>
+
 ## <a name="about"></a>Sobre o projeto
 O objetivo geral do desafio é implementar uma aplicação console gerador de arquivos. Para cumprir o objetivo, o algoritmo utiliza um crawler para recuperar o texto base para logo após utilizar buffers de tamanho pré-definido pelo usuário para realizar a escrita contínua e repetida em um arquivo de tamanho também pré-definido e no final gerar um relatório impresso no console que mostra informações como: nome do arquivo, quantidade de iterações, tempo total gasto na escrita, etc.
 
