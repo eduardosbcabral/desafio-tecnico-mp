@@ -2,7 +2,7 @@
 {
     public class FileSizeArgument : ApplicationArgument<long>
     {
-        public FileSizeArgument(long value = 104857600L)
+        public FileSizeArgument(long value = 100L)
             : base("File Size", "-f", value, false)
         {
             Validate();
@@ -13,9 +13,14 @@
             return BytesService.ConvertMegabytesToBytes((long)_value);
         }
 
+        public override long GetRawValue()
+        {
+            return (long)_value;
+        }
+
         protected void Validate()
         {
-            if (GetValue() <= 0)
+            if (GetRawValue() <= 0)
             {
                 throw new ApplicationArgumentException($"[ERROR] The argument {Argument} ({Name}) is invalid, should be higher than zero.");
             }

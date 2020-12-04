@@ -25,5 +25,12 @@ namespace DesafioTecnicoMP.Models
         {
             return GetValue();
         }
+
+        public abstract T GetRawValue();
+
+        object IApplicationArgument.GetRawValue()
+        {
+            return GetRawValue();
+        }
     }
 }

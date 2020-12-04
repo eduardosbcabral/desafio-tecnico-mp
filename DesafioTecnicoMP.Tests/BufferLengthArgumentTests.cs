@@ -8,7 +8,7 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_instantiate_correctly_by_specification()
         {
-            var argument = new BufferLengthArgument(10485760L);
+            var argument = new BufferLengthArgument(10L);
             Assert.Equal("Buffer Length", argument.Name);
             Assert.Equal(10485760L, argument.GetValue());
             Assert.Equal("-b", argument.Argument);

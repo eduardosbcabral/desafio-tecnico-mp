@@ -2,7 +2,7 @@
 {
     public class BufferLengthArgument : ApplicationArgument<long>
     {
-        public BufferLengthArgument(long value = 1048576L)
+        public BufferLengthArgument(long value = 1L)
             : base("Buffer Length", "-b", value, false)
         {
             Validate();
@@ -13,9 +13,14 @@
             return BytesService.ConvertMegabytesToBytes((long)_value);
         }
 
+        public override long GetRawValue()
+        {
+            return (long)_value;
+        }
+
         protected void Validate()
         {
-            if (GetValue() <= 0)
+            if (GetRawValue() <= 0)
             {
                 throw new ApplicationArgumentException($"[ERROR] The argument {Argument} ({Name}) is invalid, should be higher than zero.");
             }

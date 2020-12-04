@@ -9,7 +9,7 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_instantiate_correctly_by_specification()
         {
-            var argument = new FileSizeArgument(10485760L);
+            var argument = new FileSizeArgument(10L);
             Assert.Equal("File Size", argument.Name);
             Assert.Equal(10485760L, argument.GetValue());
             Assert.Equal("-f", argument.Argument);

@@ -16,9 +16,17 @@
             return _value.ToString();
         }
 
+        public override string GetRawValue()
+        {
+            if (_value == null)
+                return null;
+
+            return _value.ToString();
+        }
+
         public void Validate()
         {
-            if (string.IsNullOrEmpty(GetValue()) && Required)
+            if (string.IsNullOrEmpty(GetRawValue()) && Required)
             {
                 throw new ApplicationArgumentException($"The argument {Argument} ({Name}) is required.");
             }
