@@ -74,24 +74,7 @@ namespace DesafioTecnicoMP
 
             //Console.WriteLine("Writing to file successfully completed...");
 
-            //PrintReport(report);
-        }
-
-        static void PrintReport(Report report)
-        {
-            var consoleTable = new ConsoleTable(200);
-            consoleTable.PrintLine();
-            consoleTable.PrintRow("Nome", "Tamanho", "Path", "Iterações", "Tempo Total", "Tempo Médio");
-            consoleTable.PrintLine();
-            consoleTable.PrintRow(
-                report.FileName,
-                report.FileSize.ToString(),
-                report.Path,
-                report.Iterations.ToString(),
-                report.TotalTime.ToString(),
-                report.AverageTime.ToString());
-            consoleTable.PrintLine();
-            Console.ReadLine();
+            //report.Print();
         }
     }
 }

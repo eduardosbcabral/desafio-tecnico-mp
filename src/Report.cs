@@ -20,5 +20,22 @@ namespace DesafioTecnicoMP
             TotalTime = totalTime;
             AverageTime = averageTime;
         }
+
+        public void Print()
+        {
+            var consoleTable = new ConsoleTable(200);
+            consoleTable.PrintLine();
+            consoleTable.PrintRow("Nome", "Tamanho", "Path", "Iterações", "Tempo Total", "Tempo Médio");
+            consoleTable.PrintLine();
+            consoleTable.PrintRow(
+                FileName,
+                FileSize.ToString(),
+                Path,
+                Iterations.ToString(),
+                TotalTime.ToString(),
+                AverageTime.ToString());
+            consoleTable.PrintLine();
+            Console.ReadLine();
+        }
     }
 }
