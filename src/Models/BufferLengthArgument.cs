@@ -8,9 +8,14 @@
             Validate();
         }
 
+        public override long GetValue()
+        {
+            return BytesService.ConvertMegabytesToBytes((long)_value);
+        }
+
         protected void Validate()
         {
-            if (Value <= 0)
+            if (GetValue() <= 0)
             {
                 throw new ApplicationArgumentException($"[ERROR] The argument {Argument} ({Name}) is invalid, should be higher than zero.");
             }

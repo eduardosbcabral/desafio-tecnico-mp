@@ -1,118 +1,80 @@
-﻿using System;
+﻿using DesafioTecnicoMP.Models;
+using System;
 
 namespace DesafioTecnicoMP
 {
     class Program
     {
-        private const long DEFAULT_FILE_SIZE = 104857600;
-        private const long DEFAULT_BUFFER_LENGTH = 1048576;
         private const string FIRST_CRAWLER_URL = @"https://lerolero.com/";
         private const string SECOND_CRAWLER_URL = @"https://mothereff.in/byte-counter#";
 
+        private const string FILE_SIZE_ARGUMENT = "-f";
+        private const string BUFFER_LENGTH_ARGUMENT = "-b";
+        private const string PATH_ARGUMENT = "-p";
+
         static void Main(string[] args)
         {
-            var fileSizeArg = GetArgValue<long>(args, "-f");
-            var bufferLengthArg = GetArgValue<long>(args, "-b");
-            var path = GetArgValue<string>(args, "-p");
+            var argumentsFactory = new ArgumentsFactory(args, FILE_SIZE_ARGUMENT, BUFFER_LENGTH_ARGUMENT, PATH_ARGUMENT);
 
-            if (string.IsNullOrEmpty(path))
-            {
-                Console.WriteLine("The argument -p (Path) is required.");
-                Console.ReadLine();
-                return;
-            }
+            var fileSizeArgument = (FileSizeArgument)argumentsFactory.GetArgument(FILE_SIZE_ARGUMENT);
+            var bufferLengthArgument = (BufferLengthArgument)argumentsFactory.GetArgument(BUFFER_LENGTH_ARGUMENT);
+            var pathArgument = (PathArgument)argumentsFactory.GetArgument(PATH_ARGUMENT);
 
-            if (fileSizeArg <= 0)
-            {
-                Console.WriteLine("[ERROR] The argument -f (File Size) is invalid, should be higher than zero.");
-                Console.ReadLine();
-                return;
-            }
+            //Console.WriteLine("Starting application...");
 
-            long fileSize;
+            //var crawler = new CrawlerService();
 
-            if (fileSizeArg == 0)
-            {
-                fileSize = DEFAULT_FILE_SIZE;
-            }
-            else
-            {
-                fileSize = BytesService.ConvertMegabytesToBytes(fileSizeArg);
-            }
+            //string sentence;
 
-            if (bufferLengthArg < 0)
-            {
-                Console.WriteLine("[ERROR] The argument -b (Buffer Length) is invalid, should be higher than zero.");
-                Console.ReadLine();
-                return;
-            }
+            //try
+            //{
+            //    Console.WriteLine("Starting first crawler...");
+            //    sentence = crawler
+            //        .GoToUrl(FIRST_CRAWLER_URL)
+            //        .GetTextContentFromElement(".sentence");
+            //    Console.WriteLine("First crawler successfully completed...");
+            //}
+            //catch (CrawlerException ex)
+            //{
+            //    Console.WriteLine("[ERROR] " + ex.Message);
+            //    Console.ReadLine();
+            //    return;
+            //}
 
-            long bufferLength;
+            //var bytesCount = 0;
 
-            if (bufferLengthArg == 0)
-            {
-                bufferLength = DEFAULT_BUFFER_LENGTH;
-            }
-            else
-            {
-                bufferLength = BytesService.ConvertMegabytesToBytes(bufferLengthArg);
-            }
+            //try
+            //{
+            //    Console.WriteLine("Starting second crawler...");
+            //    var bytesFromPage = crawler
+            //        .GoToUrl(SECOND_CRAWLER_URL + sentence)
+            //        .GetTextContentFromElement("#bytes");
 
-            Console.WriteLine("Starting application...");
+            //    bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
+            //    Console.WriteLine("Second crawler successfully completed...");
+            //}
+            //catch (CrawlerException)
+            //{
+            //    bytesCount = BytesService.CountFromString(sentence);
+            //}
+            //finally
+            //{
+            //    crawler.Quit();
+            //}
 
-            var crawler = new CrawlerService();
+            //Console.WriteLine("Starting to write in the file using buffer...");
 
-            string sentence;
+            //var writeBuffer = new WriteBuffer(bufferLength)
+            //    .StringInput(sentence)
+            //    .BytesCount(bytesCount);
 
-            try
-            {
-                Console.WriteLine("Starting first crawler...");
-                sentence = crawler
-                    .GoToUrl(FIRST_CRAWLER_URL)
-                    .GetTextContentFromElement(".sentence");
-                Console.WriteLine("First crawler successfully completed...");
-            }
-            catch (CrawlerException ex)
-            {
-                Console.WriteLine("[ERROR] " + ex.Message);
-                Console.ReadLine();
-                return;
-            }
+            //var report = new FileService(path, fileSize)
+            //    .WriteUsingBufferUntilEnd(writeBuffer)
+            //    .Report();
 
-            var bytesCount = 0;
+            //Console.WriteLine("Writing to file successfully completed...");
 
-            try
-            {
-                Console.WriteLine("Starting second crawler...");
-                var bytesFromPage = crawler
-                    .GoToUrl(SECOND_CRAWLER_URL + sentence)
-                    .GetTextContentFromElement("#bytes");
-
-                bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
-                Console.WriteLine("Second crawler successfully completed...");
-            }
-            catch (CrawlerException)
-            {
-                bytesCount = BytesService.CountFromString(sentence);
-            }
-            finally
-            {
-                crawler.Quit();
-            }
-
-            Console.WriteLine("Starting to write in the file using buffer...");
-
-            var writeBuffer = new WriteBuffer(bufferLength)
-                .StringInput(sentence)
-                .BytesCount(bytesCount);
-
-            var report = new FileService(path, fileSize)
-                .WriteUsingBufferUntilEnd(writeBuffer)
-                .Report();
-
-            Console.WriteLine("Writing to file successfully completed...");
-
-            PrintReport(report);
+            //PrintReport(report);
         }
 
         static void PrintReport(Report report)
@@ -130,26 +92,6 @@ namespace DesafioTecnicoMP
                 report.AverageTime.ToString());
             consoleTable.PrintLine();
             Console.ReadLine();
-        }
-
-        static T GetArgValue<T>(string[] args, string argName)
-        {
-            T argValue = default;
-            for(var i = 0; i < args.Length; i++)
-            {
-                if(args[i] == argName)
-                {
-                    try
-                    {
-                        argValue = (T)Convert.ChangeType(args[i + 1], typeof(T));
-                    }
-                    catch (Exception)
-                    {
-                        throw new ArgumentException("An error occurred while running the application with the parameters.");
-                    }
-                }
-            }
-            return argValue;
         }
     }
 }

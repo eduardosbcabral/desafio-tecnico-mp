@@ -8,9 +8,17 @@
             Validate();
         }
 
+        public override string GetValue()
+        {
+            if (_value == null)
+                return null;
+
+            return _value.ToString();
+        }
+
         public void Validate()
         {
-            if (string.IsNullOrEmpty(Value) && Required)
+            if (string.IsNullOrEmpty(GetValue()) && Required)
             {
                 throw new ApplicationArgumentException($"The argument {Argument} ({Name}) is required.");
             }

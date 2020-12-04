@@ -8,7 +8,7 @@ namespace DesafioTecnicoMP
         public static int CountFromString(string str)
         {
             if (string.IsNullOrEmpty(str))
-                throw new ArgumentNullException(nameof(str), "Argument cannot be null.");
+                throw new ArgumentException(nameof(str), "Argument cannot be null.");
 
             return Encoding.UTF8.GetByteCount(str);
         }
@@ -16,7 +16,7 @@ namespace DesafioTecnicoMP
         public static byte[] StringToBytes(string str)
         {
             if (string.IsNullOrEmpty(str))
-                throw new ArgumentNullException(nameof(str), "Argument cannot be null.");
+                throw new ArgumentException(nameof(str), "Argument cannot be null.");
 
             return Encoding.UTF8.GetBytes(str);
         }
@@ -24,7 +24,7 @@ namespace DesafioTecnicoMP
         public static long ConvertMegabytesToBytes(long megabytes)
         {
             if (megabytes <= 0)
-                throw new ArgumentNullException(nameof(megabytes), "Argument cannot be zero or lesser.");
+                throw new ArgumentException(nameof(megabytes), "Argument cannot be zero or lesser.");
 
             return megabytes * 1048576;
         }
@@ -32,7 +32,7 @@ namespace DesafioTecnicoMP
         public static long ConvertBytesToMegabytes(long bytes)
         {
             if (bytes <= 0)
-                throw new ArgumentNullException(nameof(bytes), "Argument cannot be zero or lesser.");
+                throw new ArgumentException(nameof(bytes), "Argument cannot be zero or lesser.");
 
             return bytes / 1024 / 1024;
         }

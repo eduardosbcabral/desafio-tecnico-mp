@@ -14,7 +14,7 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_throw_ArgumentNullException_when_counting_from_string_and_argument_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => BytesService.CountFromString(null));
+            Assert.Throws<ArgumentException>(() => BytesService.CountFromString(null));
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_throw_ArgumentNullException_when_converting_string_to_bytes_and_argument_is_null()
         {
-            Assert.Throws<ArgumentNullException>(() => BytesService.StringToBytes(null));
+            Assert.Throws<ArgumentException>(() => BytesService.StringToBytes(null));
         }
 
         [Fact]
@@ -38,13 +38,13 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_throw_ArgumentNullException_when_converting_megabytes_to_bytes_and_argument_is_zero()
         {
-            Assert.Throws<ArgumentNullException>(() => BytesService.ConvertMegabytesToBytes(0));
+            Assert.Throws<ArgumentException>(() => BytesService.ConvertMegabytesToBytes(0));
         }
 
         [Fact]
         public void Should_throw_ArgumentNullException_when_converting_megabytes_to_bytes_and_argument_is_lesser_than_zero()
         {
-            Assert.Throws<ArgumentNullException>(() => BytesService.ConvertMegabytesToBytes(-1));
+            Assert.Throws<ArgumentException>(() => BytesService.ConvertMegabytesToBytes(-1));
         }
 
         [Fact]
@@ -56,13 +56,13 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_throw_ArgumentNullException_when_converting_bytes_to_megabytes_and_argument_is_zero()
         {
-            Assert.Throws<ArgumentNullException>(() => BytesService.ConvertBytesToMegabytes(0));
+            Assert.Throws<ArgumentException>(() => BytesService.ConvertBytesToMegabytes(0));
         }
 
         [Fact]
         public void Should_throw_ArgumentNullException_when_converting_bytes_to_megabytes_and_argument_is_lesser_than_zero()
         {
-            Assert.Throws<ArgumentNullException>(() => BytesService.ConvertBytesToMegabytes(-1));
+            Assert.Throws<ArgumentException>(() => BytesService.ConvertBytesToMegabytes(-1));
         }
     }
 }
