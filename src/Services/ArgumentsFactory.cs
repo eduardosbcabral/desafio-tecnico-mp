@@ -1,9 +1,10 @@
-﻿using DesafioTecnicoMP.Interfaces;
+﻿using DesafioTecnicoMP.Exceptions;
+using DesafioTecnicoMP.Interfaces;
 using DesafioTecnicoMP.Models;
 using System;
 using System.Linq;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Services
 {
     public class ArgumentsFactory
     {

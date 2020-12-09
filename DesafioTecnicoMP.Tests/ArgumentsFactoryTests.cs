@@ -1,4 +1,6 @@
-﻿using DesafioTecnicoMP.Models;
+﻿using DesafioTecnicoMP.Exceptions;
+using DesafioTecnicoMP.Models;
+using DesafioTecnicoMP.Services;
 using Xunit;
 
 namespace DesafioTecnicoMP.Tests

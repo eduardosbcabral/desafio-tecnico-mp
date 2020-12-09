@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Services
 {
     public class BytesService
     {

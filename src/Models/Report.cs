@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DesafioTecnicoMP.Services;
+using System;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Models
 {
     public class Report
     {

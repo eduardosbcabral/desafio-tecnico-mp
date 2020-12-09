@@ -1,4 +1,5 @@
-﻿using DesafioTecnicoMP.Models;
+﻿using DesafioTecnicoMP.Exceptions;
+using DesafioTecnicoMP.Models;
 using System;
 using Xunit;
 

@@ -1,4 +1,5 @@
-﻿using DesafioTecnicoMP.Interfaces;
+﻿using DesafioTecnicoMP.Exceptions;
+using DesafioTecnicoMP.Interfaces;
 using DesafioTecnicoMP.Models;
 using DesafioTecnicoMP.Services;
 using System;

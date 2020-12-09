@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Exceptions
 {
     public class CrawlerException : Exception
     {

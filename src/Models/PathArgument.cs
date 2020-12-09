@@ -1,4 +1,6 @@
-﻿namespace DesafioTecnicoMP.Models
+﻿using DesafioTecnicoMP.Exceptions;
+
+namespace DesafioTecnicoMP.Models
 {
     public class PathArgument : ApplicationArgument<string>
     {

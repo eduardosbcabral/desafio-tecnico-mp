@@ -5,11 +5,11 @@
         ICustomChromeDriver Driver { get; }
         ICustomWebDriverWait Wait { get; }
 
-        CrawlerService Setup();
-        CrawlerService GoToUrl(string url);
+        ICrawlerService Setup();
+        ICrawlerService GoToUrl(string url);
         string GetTextContentFromElement(string cssSelector);
-        CrawlerService SetTextToElement(string text, string cssSelector);
-        CrawlerService CleanElement(string cssSelector);
+        ICrawlerService SetTextToElement(string text, string cssSelector);
+        ICrawlerService CleanElement(string cssSelector);
         void Quit();
     }
 }

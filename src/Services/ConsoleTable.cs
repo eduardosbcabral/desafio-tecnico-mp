@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Services
 {
     public class ConsoleTable
     {

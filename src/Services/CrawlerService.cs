@@ -1,7 +1,8 @@
-﻿using DesafioTecnicoMP.Interfaces;
+﻿using DesafioTecnicoMP.Exceptions;
+using DesafioTecnicoMP.Interfaces;
 using OpenQA.Selenium;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Services
 {
     public class CrawlerService : ICrawlerService
     {
@@ -19,7 +20,7 @@ namespace DesafioTecnicoMP
             _seleniumService = seleniumService;
         }
 
-        public CrawlerService Setup()
+        public ICrawlerService Setup()
         {
             Driver = _seleniumService.CreateChromeDriver();
             Wait = _seleniumService.CreateWebDriverWait(Driver, timeout);
@@ -27,7 +28,7 @@ namespace DesafioTecnicoMP
             return this;
         }
 
-        public CrawlerService GoToUrl(string url)
+        public ICrawlerService GoToUrl(string url)
         {
             try
             {
@@ -61,7 +62,7 @@ namespace DesafioTecnicoMP
             return text;
         }
 
-        public CrawlerService SetTextToElement(string text, string cssSelector)
+        public ICrawlerService SetTextToElement(string text, string cssSelector)
         {
             try
             {
@@ -78,7 +79,7 @@ namespace DesafioTecnicoMP
             return this;
         }
 
-        public CrawlerService CleanElement(string cssSelector)
+        public ICrawlerService CleanElement(string cssSelector)
         {
             return SetTextToElement(string.Empty, cssSelector);
         }

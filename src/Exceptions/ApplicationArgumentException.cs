@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using System;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Exceptions
 {
     public class ApplicationArgumentException : Exception
     {

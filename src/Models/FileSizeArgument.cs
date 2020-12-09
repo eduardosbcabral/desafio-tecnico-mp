@@ -1,4 +1,7 @@
-﻿namespace DesafioTecnicoMP.Models
+﻿using DesafioTecnicoMP.Exceptions;
+using DesafioTecnicoMP.Services;
+
+namespace DesafioTecnicoMP.Models
 {
     public class FileSizeArgument : ApplicationArgument<long>
     {

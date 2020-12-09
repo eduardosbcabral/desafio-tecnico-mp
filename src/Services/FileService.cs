@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DesafioTecnicoMP.Models;
+using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace DesafioTecnicoMP
+namespace DesafioTecnicoMP.Services
 {
     public class FileService
     {
