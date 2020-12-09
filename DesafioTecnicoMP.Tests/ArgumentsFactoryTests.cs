@@ -1,7 +1,4 @@
 ﻿using DesafioTecnicoMP.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace DesafioTecnicoMP.Tests
@@ -39,6 +36,13 @@ namespace DesafioTecnicoMP.Tests
             var argument = (PathArgument)argumentsFactory.GetArgument(PATH_ARGUMENT);
             Assert.NotNull(argument);
             Assert.Equal(@"D:\dev", argument.GetValue());
+        }
+
+        [Fact]
+        public void Should_throw_ApplicationArgumentException_when_geting_invalid_argument()
+        {
+            var argumentsFactory = new ArgumentsFactory(args, FILE_SIZE_ARGUMENT, BUFFER_LENGTH_ARGUMENT, PATH_ARGUMENT);
+            Assert.Throws<ApplicationArgumentException>(() => argumentsFactory.GetArgument("wrong"));
         }
     }
 }

@@ -1,34 +1,28 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System;
+﻿using DesafioTecnicoMP.Interfaces;
+using OpenQA.Selenium;
 
 namespace DesafioTecnicoMP
 {
-    public class CrawlerService
+    public class CrawlerService : ICrawlerService
     {
-        private ChromeDriver _driver;
-        private WebDriverWait _wait;
+        public ICustomChromeDriver Driver { get; private set; }
+        public ICustomWebDriverWait Wait { get; private set; }
 
         private string _url;
 
         private const int timeout = 10;
 
-        public CrawlerService()
+        private readonly ISeleniumService _seleniumService;
+
+        public CrawlerService(ISeleniumService seleniumService)
         {
-            Setup();
+            _seleniumService = seleniumService;
         }
 
         public CrawlerService Setup()
         {
-            var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments("headless");
-
-            var driverService = ChromeDriverService.CreateDefaultService();
-            driverService.HideCommandPromptWindow = true;
-
-            _driver = new ChromeDriver(driverService, chromeOptions);
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeout));
+            Driver = _seleniumService.CreateChromeDriver();
+            Wait = _seleniumService.CreateWebDriverWait(Driver, timeout);
 
             return this;
         }
@@ -37,7 +31,7 @@ namespace DesafioTecnicoMP
         {
             try
             {
-                _driver.Navigate().GoToUrl(url);
+                Driver.Navigate().GoToUrl(url);
                 _url = url;
             } 
             catch(WebDriverException)
@@ -54,9 +48,9 @@ namespace DesafioTecnicoMP
 
             try
             {
-                _wait.Until(driver => driver.FindElement(By.CssSelector(cssSelector)).Displayed);
+                Wait.Until(driver => driver.FindElement(By.CssSelector(cssSelector)).Displayed);
 
-                var element = _driver.FindElement(By.CssSelector(cssSelector));
+                var element = Driver.FindElement(By.CssSelector(cssSelector));
                 text = element.GetAttribute("textContent");
             }
             catch(NoSuchElementException)
@@ -71,9 +65,9 @@ namespace DesafioTecnicoMP
         {
             try
             {
-                _wait.Until(driver => driver.FindElement(By.CssSelector(cssSelector)).Displayed);
+                Wait.Until(driver => driver.FindElement(By.CssSelector(cssSelector)).Displayed);
 
-                var element = _driver.FindElement(By.CssSelector(cssSelector));
+                var element = Driver.FindElement(By.CssSelector(cssSelector));
                 element.SendKeys(text);
             }
             catch (NoSuchElementException)
@@ -91,7 +85,7 @@ namespace DesafioTecnicoMP
 
         public void Quit()
         {
-            _driver.Quit();
+            Driver.Quit();
         }
     }
 }

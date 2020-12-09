@@ -1,4 +1,6 @@
-﻿using DesafioTecnicoMP.Models;
+﻿using DesafioTecnicoMP.Interfaces;
+using DesafioTecnicoMP.Models;
+using DesafioTecnicoMP.Services;
 using System;
 
 namespace DesafioTecnicoMP
@@ -20,61 +22,64 @@ namespace DesafioTecnicoMP
             var bufferLengthArgument = (BufferLengthArgument)argumentsFactory.GetArgument(BUFFER_LENGTH_ARGUMENT);
             var pathArgument = (PathArgument)argumentsFactory.GetArgument(PATH_ARGUMENT);
 
-            //Console.WriteLine("Starting application...");
+            Console.WriteLine("Starting application...");
 
-            //var crawler = new CrawlerService();
+            var seleniumService = new SeleniumService();
 
-            //string sentence;
+            var crawler = new CrawlerService(seleniumService)
+                .Setup();
 
-            //try
-            //{
-            //    Console.WriteLine("Starting first crawler...");
-            //    sentence = crawler
-            //        .GoToUrl(FIRST_CRAWLER_URL)
-            //        .GetTextContentFromElement(".sentence");
-            //    Console.WriteLine("First crawler successfully completed...");
-            //}
-            //catch (CrawlerException ex)
-            //{
-            //    Console.WriteLine("[ERROR] " + ex.Message);
-            //    Console.ReadLine();
-            //    return;
-            //}
+            string sentence;
 
-            //var bytesCount = 0;
+            try
+            {
+                Console.WriteLine("Starting first crawler...");
+                sentence = crawler
+                    .GoToUrl(FIRST_CRAWLER_URL)
+                    .GetTextContentFromElement(".sentence");
+                Console.WriteLine("First crawler successfully completed...");
+            }
+            catch (CrawlerException ex)
+            {
+                Console.WriteLine("[ERROR] " + ex.Message);
+                Console.ReadLine();
+                return;
+            }
 
-            //try
-            //{
-            //    Console.WriteLine("Starting second crawler...");
-            //    var bytesFromPage = crawler
-            //        .GoToUrl(SECOND_CRAWLER_URL + sentence)
-            //        .GetTextContentFromElement("#bytes");
+            var bytesCount = 0;
 
-            //    bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
-            //    Console.WriteLine("Second crawler successfully completed...");
-            //}
-            //catch (CrawlerException)
-            //{
-            //    bytesCount = BytesService.CountFromString(sentence);
-            //}
-            //finally
-            //{
-            //    crawler.Quit();
-            //}
+            try
+            {
+                Console.WriteLine("Starting second crawler...");
+                var bytesFromPage = crawler
+                    .GoToUrl(SECOND_CRAWLER_URL + sentence)
+                    .GetTextContentFromElement("#bytes");
 
-            //Console.WriteLine("Starting to write in the file using buffer...");
+                bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
+                Console.WriteLine("Second crawler successfully completed...");
+            }
+            catch (CrawlerException)
+            {
+                bytesCount = BytesService.CountFromString(sentence);
+            }
+            finally
+            {
+                crawler.Quit();
+            }
 
-            //var writeBuffer = new WriteBuffer(bufferLength)
-            //    .StringInput(sentence)
-            //    .BytesCount(bytesCount);
+            Console.WriteLine("Starting to write in the file using buffer...");
 
-            //var report = new FileService(path, fileSize)
-            //    .WriteUsingBufferUntilEnd(writeBuffer)
-            //    .Report();
+            var writeBuffer = new WriteBuffer(bufferLengthArgument.GetValue())
+                .StringInput(sentence)
+                .BytesCount(bytesCount);
 
-            //Console.WriteLine("Writing to file successfully completed...");
+            var report = new FileService(pathArgument.GetValue(), fileSizeArgument.GetValue())
+                .WriteUsingBufferUntilEnd(writeBuffer)
+                .Report();
 
-            //report.Print();
+            Console.WriteLine("Writing to file successfully completed...");
+
+            report.Print();
         }
     }
 }
