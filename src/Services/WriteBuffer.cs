@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DesafioTecnicoMP.Interfaces;
+using System;
 
 namespace DesafioTecnicoMP.Services
 {
-    public class WriteBuffer
+    public class WriteBuffer : IWriteBuffer
     {
         private readonly byte[] _buffer;
 
@@ -22,14 +23,17 @@ namespace DesafioTecnicoMP.Services
             _integrityCheck = integrityCheck;
         }
 
-        public WriteBuffer StringInput(string str)
+        public IWriteBuffer StringInput(string str)
         {
             _str = str;
+
+            Validate();
+
             _strInBytes = BytesService.StringToBytes(_str);
             return this;
         }
 
-        public WriteBuffer BytesCount(int bytesCount)
+        public IWriteBuffer BytesCount(int bytesCount)
         {
             Validate();
             _bytesCount = bytesCount;
@@ -46,15 +50,20 @@ namespace DesafioTecnicoMP.Services
             return _buffer;
         }
 
-        public WriteBuffer Clear()
+        public IWriteBuffer Clear()
         {
             Array.Clear(_buffer, 0, (int)_bufferLength);
             return this;
         }
 
-        public WriteBuffer WriteUntilEnd()
+        public IWriteBuffer WriteUntilEnd()
         {
             Validate();
+
+            if(_bytesCount == 0)
+            {
+                _bytesCount = BytesService.CountFromString(_str);
+            }
 
             for (var i = 0L; i < _bufferLength; i += _bytesCount)
             {
@@ -74,7 +83,7 @@ namespace DesafioTecnicoMP.Services
             return this;
         }
 
-        public bool CheckBufferIntegrity()
+        private bool CheckBufferIntegrity()
         {
             Validate();
 

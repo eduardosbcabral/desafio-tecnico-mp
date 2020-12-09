@@ -1,5 +1,4 @@
 ﻿using DesafioTecnicoMP.Exceptions;
-using DesafioTecnicoMP.Interfaces;
 using DesafioTecnicoMP.Models;
 using DesafioTecnicoMP.Services;
 using System;
@@ -8,9 +7,6 @@ namespace DesafioTecnicoMP
 {
     class Program
     {
-        private const string FIRST_CRAWLER_URL = @"https://lerolero.com/";
-        private const string SECOND_CRAWLER_URL = @"https://mothereff.in/byte-counter#";
-
         private const string FILE_SIZE_ARGUMENT = "-f";
         private const string BUFFER_LENGTH_ARGUMENT = "-b";
         private const string PATH_ARGUMENT = "-p";
@@ -25,48 +21,13 @@ namespace DesafioTecnicoMP
 
             Console.WriteLine("Starting application...");
 
-            var seleniumService = new SeleniumService();
-
-            var crawler = new CrawlerService(seleniumService)
+            var crawler = new CrawlerService(new SeleniumService())
                 .Setup();
 
-            string sentence;
+            var crawlerStatement = new CrawlerStatement(crawler);
 
-            try
-            {
-                Console.WriteLine("Starting first crawler...");
-                sentence = crawler
-                    .GoToUrl(FIRST_CRAWLER_URL)
-                    .GetTextContentFromElement(".sentence");
-                Console.WriteLine("First crawler successfully completed...");
-            }
-            catch (CrawlerException ex)
-            {
-                Console.WriteLine("[ERROR] " + ex.Message);
-                Console.ReadLine();
-                return;
-            }
-
-            var bytesCount = 0;
-
-            try
-            {
-                Console.WriteLine("Starting second crawler...");
-                var bytesFromPage = crawler
-                    .GoToUrl(SECOND_CRAWLER_URL + sentence)
-                    .GetTextContentFromElement("#bytes");
-
-                bytesCount = int.Parse(bytesFromPage.Split(" ")[0]);
-                Console.WriteLine("Second crawler successfully completed...");
-            }
-            catch (CrawlerException)
-            {
-                bytesCount = BytesService.CountFromString(sentence);
-            }
-            finally
-            {
-                crawler.Quit();
-            }
+            var sentence = crawlerStatement.GetSentence();
+            var bytesCount = crawlerStatement.GetBytesCount(sentence);
 
             Console.WriteLine("Starting to write in the file using buffer...");
 

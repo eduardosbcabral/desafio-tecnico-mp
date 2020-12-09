@@ -1,15 +1,16 @@
-﻿using DesafioTecnicoMP.Models;
+﻿using DesafioTecnicoMP.Interfaces;
+using DesafioTecnicoMP.Models;
 using System;
 using System.Diagnostics;
 using System.IO;
 
 namespace DesafioTecnicoMP.Services
 {
-    public class FileService
+    public class FileService : IFileService
     {
-        private readonly string _path;
-        private readonly string _fileName;
-        private readonly string _fullPath;
+        public string Path { get; private set; }
+        public string FileName { get; private set; }
+        public string FullPath { get; private set; }
 
         private readonly long _fileSize;
 
@@ -19,22 +20,22 @@ namespace DesafioTecnicoMP.Services
 
         public FileService(string path, long fileSize)
         {
-            _path = Path.Join(@"D:", @"dev");
-            _fileName = $"{DateTime.Now:yyyy-MM-dd-HHmmss}-desafio.txt";
-            _fullPath = Path.Combine(path, _fileName);
+            Path = path;
+            FileName = $"{DateTime.Now:yyyy-MM-dd-HHmmss}-desafio.txt";
+            FullPath = System.IO.Path.Combine(path, FileName);
 
             _fileSize = fileSize;
 
             _stopWatch = new Stopwatch();
         }
 
-        public FileService WriteUsingBufferUntilEnd(WriteBuffer writeBuffer)
+        public FileService WriteUsingBufferUntilEnd(IWriteBuffer writeBuffer)
         {
             var bufferLength = writeBuffer.BufferLength();
 
             _stopWatch.Start();
 
-            using FileStream fs = File.OpenWrite(_fullPath);
+            using FileStream fs = File.OpenWrite(FullPath);
 
             for (var i = 0d; i < _fileSize; i += bufferLength)
             {
@@ -65,7 +66,7 @@ namespace DesafioTecnicoMP.Services
 
         public Report Report()
         {
-            return new Report(_fileName, _fileSize, _path, _iterations, _stopWatch.Elapsed, _stopWatch.Elapsed/_iterations);
+            return new Report(FileName, _fileSize, Path, _iterations, _stopWatch.Elapsed, _stopWatch.Elapsed/_iterations);
         }
 
         private FileService Close()
