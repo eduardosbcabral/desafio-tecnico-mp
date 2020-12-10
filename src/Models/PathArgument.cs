@@ -5,7 +5,7 @@ namespace DesafioTecnicoMP.Models
     public class PathArgument : ApplicationArgument<string>
     {
         public PathArgument(string value)
-            : base("Path", "-p", value, true)
+            : base("Path", ArgumentsConstants.PATH_ARGUMENT, value, true)
         {
             Validate();
         }

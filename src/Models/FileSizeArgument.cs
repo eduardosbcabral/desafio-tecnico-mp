@@ -5,8 +5,12 @@ namespace DesafioTecnicoMP.Models
 {
     public class FileSizeArgument : ApplicationArgument<long>
     {
-        public FileSizeArgument(long value = 100L)
-            : base("File Size", "-f", value, false)
+        public FileSizeArgument(string value = null)
+            : base("File Size", 
+                  ArgumentsConstants.FILE_SIZE_ARGUMENT, 
+                  ConvertArgValue(value) == 0 
+                  ? 100L 
+                  : ConvertArgValue(value), false)
         {
             Validate();
         }

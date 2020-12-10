@@ -5,8 +5,12 @@ namespace DesafioTecnicoMP.Models
 {
     public class BufferLengthArgument : ApplicationArgument<long>
     {
-        public BufferLengthArgument(long value = 1L)
-            : base("Buffer Length", "-b", value, false)
+        public BufferLengthArgument(string value = null)
+            : base("Buffer Length", 
+                  ArgumentsConstants.BUFFER_LENGTH_ARGUMENT, 
+                  ConvertArgValue(value) == 0 
+                  ? 1L 
+                  : ConvertArgValue(value), false)
         {
             Validate();
         }

@@ -7,17 +7,16 @@ namespace DesafioTecnicoMP
 {
     class Program
     {
-        private const string FILE_SIZE_ARGUMENT = "-f";
-        private const string BUFFER_LENGTH_ARGUMENT = "-b";
-        private const string PATH_ARGUMENT = "-p";
-
         static void Main(string[] args)
         {
-            var argumentsFactory = new ArgumentsFactory(args, FILE_SIZE_ARGUMENT, BUFFER_LENGTH_ARGUMENT, PATH_ARGUMENT);
+            var argumentsFactory = new ArgumentsFactory(args, 
+                ArgumentsConstants.FILE_SIZE_ARGUMENT,
+                ArgumentsConstants.BUFFER_LENGTH_ARGUMENT,
+                ArgumentsConstants.PATH_ARGUMENT);
 
-            var fileSizeArgument = (FileSizeArgument)argumentsFactory.GetArgument(FILE_SIZE_ARGUMENT);
-            var bufferLengthArgument = (BufferLengthArgument)argumentsFactory.GetArgument(BUFFER_LENGTH_ARGUMENT);
-            var pathArgument = (PathArgument)argumentsFactory.GetArgument(PATH_ARGUMENT);
+            var fileSizeArgument = argumentsFactory.CreateArgument<FileSizeArgument>(ArgumentsConstants.FILE_SIZE_ARGUMENT);
+            var bufferLengthArgument = argumentsFactory.CreateArgument<BufferLengthArgument>(ArgumentsConstants.BUFFER_LENGTH_ARGUMENT);
+            var pathArgument = argumentsFactory.CreateArgument<PathArgument>(ArgumentsConstants.PATH_ARGUMENT);
 
             Console.WriteLine("Starting application...");
 

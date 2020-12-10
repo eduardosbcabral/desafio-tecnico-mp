@@ -1,4 +1,5 @@
 ﻿using DesafioTecnicoMP.Interfaces;
+using System;
 
 namespace DesafioTecnicoMP.Models
 {
@@ -31,6 +32,25 @@ namespace DesafioTecnicoMP.Models
         object IApplicationArgument.GetRawValue()
         {
             return GetRawValue();
+        }
+
+        protected static T ConvertArgValue(string argumentValue)
+        {
+            if (argumentValue == null)
+                return default;
+
+            T argValue;
+
+            try
+            {
+                argValue = (T)Convert.ChangeType(argumentValue, typeof(T));
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("An error occurred while running the application with the parameters.");
+            }
+
+            return argValue;
         }
     }
 }

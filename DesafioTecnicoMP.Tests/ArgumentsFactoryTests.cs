@@ -16,8 +16,8 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_get_file_size_argument_correctly()
         {
-            var argumentsFactory = new ArgumentsFactory(args, FILE_SIZE_ARGUMENT, BUFFER_LENGTH_ARGUMENT, PATH_ARGUMENT);
-            var argument = (FileSizeArgument)argumentsFactory.GetArgument(FILE_SIZE_ARGUMENT);
+            var argumentsFactory = new ArgumentsFactory(args, ArgumentsConstants.FILE_SIZE_ARGUMENT, ArgumentsConstants.BUFFER_LENGTH_ARGUMENT, ArgumentsConstants.PATH_ARGUMENT);
+            var argument = argumentsFactory.CreateArgument<FileSizeArgument>(FILE_SIZE_ARGUMENT);
             Assert.NotNull(argument);
             Assert.Equal(5242880L, argument.GetValue());
         }
@@ -25,8 +25,8 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_get_buffer_length_argument_correctly()
         {
-            var argumentsFactory = new ArgumentsFactory(args, FILE_SIZE_ARGUMENT, BUFFER_LENGTH_ARGUMENT, PATH_ARGUMENT);
-            var argument = (BufferLengthArgument)argumentsFactory.GetArgument(BUFFER_LENGTH_ARGUMENT);
+            var argumentsFactory = new ArgumentsFactory(args, ArgumentsConstants.FILE_SIZE_ARGUMENT, ArgumentsConstants.BUFFER_LENGTH_ARGUMENT, ArgumentsConstants.PATH_ARGUMENT);
+            var argument = argumentsFactory.CreateArgument<BufferLengthArgument>(BUFFER_LENGTH_ARGUMENT);
             Assert.NotNull(argument);
             Assert.Equal(10485760L, argument.GetValue());
         }
@@ -35,7 +35,7 @@ namespace DesafioTecnicoMP.Tests
         public void Should_get_path_argument_correctly()
         {
             var argumentsFactory = new ArgumentsFactory(args, FILE_SIZE_ARGUMENT, BUFFER_LENGTH_ARGUMENT, PATH_ARGUMENT);
-            var argument = (PathArgument)argumentsFactory.GetArgument(PATH_ARGUMENT);
+            var argument = argumentsFactory.CreateArgument<PathArgument>(PATH_ARGUMENT);
             Assert.NotNull(argument);
             Assert.Equal(@"D:\dev", argument.GetValue());
         }
@@ -43,8 +43,8 @@ namespace DesafioTecnicoMP.Tests
         [Fact]
         public void Should_throw_ApplicationArgumentException_when_geting_invalid_argument()
         {
-            var argumentsFactory = new ArgumentsFactory(args, FILE_SIZE_ARGUMENT, BUFFER_LENGTH_ARGUMENT, PATH_ARGUMENT);
-            Assert.Throws<ApplicationArgumentException>(() => argumentsFactory.GetArgument("wrong"));
+            var argumentsFactory = new ArgumentsFactory(args, ArgumentsConstants.FILE_SIZE_ARGUMENT, ArgumentsConstants.BUFFER_LENGTH_ARGUMENT, ArgumentsConstants.PATH_ARGUMENT);
+            Assert.Throws<ApplicationArgumentException>(() => argumentsFactory.CreateArgument<PathArgument>("wrong"));
         }
     }
 }

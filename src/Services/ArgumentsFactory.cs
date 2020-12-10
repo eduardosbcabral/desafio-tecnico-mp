@@ -2,22 +2,34 @@
 using DesafioTecnicoMP.Interfaces;
 using DesafioTecnicoMP.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DesafioTecnicoMP.Services
 {
     public class ArgumentsFactory
     {
-        private readonly string[] _applicationArguments;
         private readonly string[] _enabledArguments;
+
+        private readonly IDictionary<string, string> _mappedArguments;
+
+        private const char ARGUMENT_PREFIX = '-';
+
+        private readonly IDictionary<string, Func<string, IApplicationArgument>> _arguments
+            = new Dictionary<string, Func<string, IApplicationArgument>>()
+        {
+            { ArgumentsConstants.FILE_SIZE_ARGUMENT, (argValue) => new FileSizeArgument(argValue) },
+            { ArgumentsConstants.BUFFER_LENGTH_ARGUMENT, (argValue) => new BufferLengthArgument(argValue) },
+            { ArgumentsConstants.PATH_ARGUMENT, (argValue) => new PathArgument(argValue) },
+        };
 
         public ArgumentsFactory(string[] applicationArguments, params string[] enabledArguments)
         {
-            _applicationArguments = applicationArguments;
             _enabledArguments = enabledArguments;
+            _mappedArguments = MapArguments(applicationArguments);
         }
 
-        public IApplicationArgument GetArgument(string argumentName)
+        public T CreateArgument<T>(string argumentName) where T : IApplicationArgument
         {
             if (!ArgumentIsEnabled(argumentName))
                 throw new ApplicationArgumentException($"Argument ({argumentName}) it is not enabled on this application.");
@@ -26,50 +38,34 @@ namespace DesafioTecnicoMP.Services
 
             try
             {
-                foreach (var argument in _applicationArguments)
-                {
-                    if (argumentName == "-f" && argument == argumentName)
-                    {
-                        applicationArgument = new FileSizeArgument(GetArgValue<long>(argument));
-                    }
-                    else if (argument == "-b" && argument == argumentName)
-                    {
-                        applicationArgument = new BufferLengthArgument(GetArgValue<long>(argument));
-                    }
-                    else if (argument == "-p" && argument == argumentName)
-                    {
-                        applicationArgument = new PathArgument(GetArgValue<string>(argument));
-                    }
-                }
+                applicationArgument = _arguments[argumentName].Invoke(_mappedArguments[argumentName]);
             }
-            catch(ApplicationArgumentException ex)
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();
                 throw ex;
             }
 
-            return applicationArgument;
+            return (T)applicationArgument;
         }
 
-        private T GetArgValue<T>(string argumentName)
+        private IDictionary<string, string> MapArguments(string[] applicationArguments)
         {
-            T argValue = default;
-            for (var i = 0; i < _applicationArguments.Length; i++)
+            IDictionary<string, string> mappedArguments = new Dictionary<string, string>();
+
+            for(var i = 0; i < applicationArguments.Length; i++)
             {
-                if (_applicationArguments[i] == argumentName)
+                if (applicationArguments[i].Contains(ARGUMENT_PREFIX))
                 {
-                    try
-                    {
-                        argValue = (T)Convert.ChangeType(_applicationArguments[i + 1], typeof(T));
-                    }
-                    catch (Exception)
-                    {
-                        throw new ArgumentException("An error occurred while running the application with the parameters.");
-                    }
+                    mappedArguments.Add(new KeyValuePair<string, string>(
+                        applicationArguments[i],
+                        applicationArguments[i + 1] ?? string.Empty
+                    ));
                 }
             }
-            return argValue;
+
+            return mappedArguments;
         }
 
         private bool ArgumentIsEnabled(string argument)
